@@ -2,21 +2,27 @@ package com.test;
 
 import com.calculator.operations.MathOperation;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class TestCalculator {
 
 
     public static void main(String[] args) {
-        System.out.println(calculate(1,5,(a,b)->a*b));
-        System.out.println(calculate(5,5,(a,b)->a+b));
-        System.out.println(calculate(6,5,(a,b)->a-b));
-        System.out.println(calculate(4,2,(a,b)->a/b));
-        System.out.println(calculate(4,2,Math::addExact));
-        System.out.println(calculate(4,2,Math::subtractExact));
-        System.out.println(calculate(4,2,Math::multiplyExact));
-        System.out.println(calculate(4,2,Math::floorDiv));
+        calculate("5 + 2 - 3 * 7 + 2 / 3");
+
 
     }
-    public static int calculate(int a, int b, MathOperation mathOperation){
-        return mathOperation.operate(a,b);
+    public static void calculate(String equation){
+        List<String> linkedList = Arrays.stream(equation.split(" ")).filter(s -> !s.matches("[\\w\\s]")).collect(Collectors.toList());
+    }
+
+    public MathOperation getOperation(String operator){
+        Map<String, MathOperation> map = new HashMap<>();
+        map.put("+", (a,b)-> a+b);
+        map.put("*", (a,b)-> a*b);
+        map.put("-", (a,b)-> a-b);
+        map.put("/", (a,b)-> a/b);
+        return map.get(operator);
     }
 }
